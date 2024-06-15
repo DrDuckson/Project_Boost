@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cc5efsqq5ojnu"]
+[gd_scene load_steps=11 format=3 uid="uid://cc5efsqq5ojnu"]
 
 [ext_resource type="PackedScene" uid="uid://jleek3rmf6j5" path="res://scenes/player.tscn" id="1_dkcmy"]
 [ext_resource type="Script" path="res://scripts/level.gd" id="1_tsie8"]
 [ext_resource type="Script" path="res://scripts/LandingPad.gd" id="2_1hioh"]
+[ext_resource type="PackedScene" uid="uid://1lhdo16vatln" path="res://scenes/death_zone.tscn" id="4_8mvio"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q01he"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -61,3 +62,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.999657, 0.0261769, 0, -0.0261769, 0.999657, 0, 5, 11)
+
+[node name="DeathZone" parent="." instance=ExtResource("4_8mvio")]
