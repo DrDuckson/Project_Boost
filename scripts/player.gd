@@ -6,18 +6,21 @@ extends RigidBody3D
 @export var torque_thrust: float = 100.0
 var is_transitioning: bool = false
 
+@onready var crash_audio: AudioStreamPlayer = $CrashAudio
+@onready var complete_audio: AudioStreamPlayer = $CompleteAudio
+
 func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("move_up"):
-		apply_central_force(basis.y * delta * thrust)
+		apply_central_force(basis.y * thrust * delta)
 	if Input.is_action_pressed("move_left"):
-		apply_torque(Vector3(0.0, 0.0, torque_thrust*delta))
+		apply_torque(Vector3(0.0, 0.0, torque_thrust * delta))
 	if Input.is_action_pressed("move_right"):
-		apply_torque(Vector3(0.0, 0.0, -torque_thrust*delta))
+		apply_torque(Vector3(0.0, 0.0, -torque_thrust * delta))
 		
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	pass
 	
 func _on_body_entered(body: Node) -> void:
@@ -30,6 +33,7 @@ func _on_body_entered(body: Node) -> void:
 func complete_level(next_level_file: String) -> void:
 	set_process(false)
 	is_transitioning = true
+	complete_audio.play()
 	var tween = create_tween()
 	tween.tween_interval(1.0)
 	tween.tween_callback(get_tree().change_scene_to_file.bind(next_level_file))
@@ -37,6 +41,7 @@ func complete_level(next_level_file: String) -> void:
 func crash_sequence() -> void:
 	set_process(false)
 	is_transitioning = true
+	crash_audio.play()
 	var tween = create_tween()
 	tween.tween_interval(1.0)
 	tween.tween_callback(get_tree().reload_current_scene)
