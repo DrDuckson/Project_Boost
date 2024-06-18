@@ -64,7 +64,7 @@ use_collision = true
 size = Vector3(2, 0.5, 2)
 material = SubResource("StandardMaterial3D_h1ne7")
 script = ExtResource("2_al3h7")
-file_path = "res://scenes/level.tscn"
+file_path = "res://scenes/level_4.tscn"
 
 [node name="Player" parent="." instance=ExtResource("3_ynyc3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.5, 0)
