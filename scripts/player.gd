@@ -8,6 +8,7 @@ var is_transitioning: bool = false
 
 @onready var crash_audio: AudioStreamPlayer = $CrashAudio
 @onready var complete_audio: AudioStreamPlayer = $CompleteAudio
+@onready var rocket_audio: AudioStreamPlayer3D = $RocketAudio
 
 func _ready() -> void:
 	pass
@@ -15,6 +16,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("move_up"):
 		apply_central_force(basis.y * thrust * delta)
+		if rocket_audio.playing == false:
+			rocket_audio.play()
+	else:
+		rocket_audio.stop()
 	if Input.is_action_pressed("move_left"):
 		apply_torque(Vector3(0.0, 0.0, torque_thrust * delta))
 	if Input.is_action_pressed("move_right"):
@@ -31,6 +36,7 @@ func _on_body_entered(body: Node) -> void:
 			crash_sequence.call_deferred()
 
 func complete_level(next_level_file: String) -> void:
+	rocket_audio.stop()
 	set_process(false)
 	is_transitioning = true
 	complete_audio.play()
@@ -39,6 +45,7 @@ func complete_level(next_level_file: String) -> void:
 	tween.tween_callback(get_tree().change_scene_to_file.bind(next_level_file))
 
 func crash_sequence() -> void:
+	rocket_audio.stop()
 	set_process(false)
 	is_transitioning = true
 	crash_audio.play()
