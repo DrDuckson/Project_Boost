@@ -9,22 +9,33 @@ var is_transitioning: bool = false
 @onready var crash_audio: AudioStreamPlayer = $CrashAudio
 @onready var complete_audio: AudioStreamPlayer = $CompleteAudio
 @onready var rocket_audio: AudioStreamPlayer3D = $RocketAudio
+@onready var particles_mid: GPUParticles3D = $ParticlesMid
+@onready var particles_left: GPUParticles3D = $ParticlesLeft
+@onready var particles_right: GPUParticles3D = $ParticlesRight
 
 func _ready() -> void:
 	pass
-
+	
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("move_up"):
 		apply_central_force(basis.y * thrust * delta)
+		particles_mid.emitting = true
+		particles_right.emitting = true
+		particles_left.emitting = true
 		if rocket_audio.playing == false:
 			rocket_audio.play()
 	else:
 		rocket_audio.stop()
+		particles_mid.emitting = false
+		particles_right.emitting = false
+		particles_left.emitting = false
 	if Input.is_action_pressed("move_left"):
 		apply_torque(Vector3(0.0, 0.0, torque_thrust * delta))
+		particles_left.emitting = false
 	if Input.is_action_pressed("move_right"):
 		apply_torque(Vector3(0.0, 0.0, -torque_thrust * delta))
-		
+		particles_right.emitting = false
+
 func _physics_process(_delta: float) -> void:
 	pass
 	
