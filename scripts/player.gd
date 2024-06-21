@@ -12,6 +12,8 @@ var is_transitioning: bool = false
 @onready var particles_mid: GPUParticles3D = $ParticlesMid
 @onready var particles_left: GPUParticles3D = $ParticlesLeft
 @onready var particles_right: GPUParticles3D = $ParticlesRight
+@onready var explosion_particles: GPUParticles3D = $ExplosionParticles
+@onready var success_particles: GPUParticles3D = $SuccessParticles
 
 func _ready() -> void:
 	pass
@@ -51,6 +53,7 @@ func complete_level(next_level_file: String) -> void:
 	set_process(false)
 	is_transitioning = true
 	complete_audio.play()
+	success_particles.emitting = true
 	var tween = create_tween()
 	tween.tween_interval(1.0)
 	tween.tween_callback(get_tree().change_scene_to_file.bind(next_level_file))
@@ -60,6 +63,10 @@ func crash_sequence() -> void:
 	set_process(false)
 	is_transitioning = true
 	crash_audio.play()
+	explosion_particles.emitting = true
+	particles_mid.emitting = false
+	particles_right.emitting = false
+	particles_left.emitting = false
 	var tween = create_tween()
-	tween.tween_interval(1.0)
+	tween.tween_interval(2.0)
 	tween.tween_callback(get_tree().reload_current_scene)
